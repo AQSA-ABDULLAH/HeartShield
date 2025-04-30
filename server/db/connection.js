@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const DB = process.env.DATABASE_URL;
+const DB = process.env.DATABASE;
 if (!DB) {
   console.error('MongoDB URI is not defined. Set the DATABASE environment variable.');
   process.exit(1);

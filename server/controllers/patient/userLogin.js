@@ -1,4 +1,4 @@
-const User = require("../../models/Users");
+const User = require("../../models/PatientRoutes");
 const { createToken } = require("../../helpers/jwt");
 const { passwordCompare } = require("../../helpers/hashPassword");
 
@@ -37,4 +37,4 @@ const userLogin = async (req, res) => {
     }
 };
 
-module.exports = { userLogin, google };
+module.exports = { userLogin };
