@@ -1,4 +1,4 @@
-const User = require("../../models/PatientRoutes.js");
+const Patient = require("../../models/PatientRoutes.js");
 const { hashPassword } = require("../../helpers/hashPassword");
 const { createToken } = require("../../helpers/jwt");
 const compileEmailTemplate = require("../../helpers/compile-email-template.js");
@@ -7,13 +7,13 @@ const mailer = require("../../libs/mailer.js");
 class UserController {
     static userRegistration = async (req, res) => {
         try {
-            const { firstName, lastName, email, phoneNumber, password, confirmPassword, city, zipCode, address, profilePicture } = req.body;
+            const { fullName, email, phoneNumber, password, confirmPassword, age } = req.body;
 
-            if (!firstName || !email || !password || !confirmPassword) {
+            if (!fullName || !email || !password || !confirmPassword || !age) {
                 return res.status(422).json({ error: "Please fill in all fields properly" });
             }
 
-            const userExist = await User.findOne({ email: email });
+            const userExist = await Patient.findOne({ email });
 
             if (userExist) {
                 return res.status(422).json({ error: "User already exists" });
@@ -25,75 +25,80 @@ class UserController {
                 });
             }
 
-            // Hashing Password
             const hashedPassword = await hashPassword(password);
-            const user = new User({
-                firstName,
-                lastName,
+
+            const newUser = new Patient({
+                fullName,
                 email,
                 phoneNumber,
                 password: hashedPassword,
-                city,
-                zipCode,
-                address,
-                profilePicture,
+                age,
+                is_admin: false,
+                is_verified: false,
             });
 
-            const savedUser = await user.save(); // Save the user and get the saved user object
+            const savedUser = await newUser.save();
 
-            // Generate JWT Token using the saved user object
-            const token = createToken(savedUser, false, "1d");
+            // Create JWT Token
+            const token = createToken(savedUser, savedUser.is_admin, "1d");
 
-            // Send Registration mail to user
+            // Add token to the user's tokens array
+            savedUser.tokens.push({ token });
+            await savedUser.save();
+
+            console.log("User saved successfully, preparing to send email...");
+
+            // Email template
             const template = await compileEmailTemplate({
                 fileName: "register.mjml",
                 data: {
-                    firstName,
+                    fullName,
                 },
             });
 
             try {
                 await mailer.sendMail(email, "Mail Verification", template);
-                return res.status(201).send({
+                return res.status(201).json({
                     status: "success",
                     message: "User created successfully",
-                    token: token,
+                    token,
                 });
-            } catch (error) {
-                console.error("Failed to send Create User email:", error);
-                return res.status(500).send({
-                    error: "Failed to send Create User email.",
+            } catch (emailError) {
+                console.error("Failed to send registration email:", emailError);
+                return res.status(500).json({
+                    error: "User registered, but failed to send email",
                 });
             }
+
         } catch (error) {
             console.error("Error in user registration:", error);
             return res.status(500).json({ error: "Failed to register" });
         }
     }
-    
+
     static mailVerification = async (req, res) => {
         try {
-            const id = req.params.id; 
-            console.log(id);
-            const user = await User.findById(id);
-            
+            const id = req.params.id;
+            const user = await Patient.findById(id);
+
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
-    
-            user.is_verified = true; 
-    
-            await user.save(); 
-    
-            return res.status(200).json(user); 
+
+            user.is_verified = true;
+            await user.save();
+
+            return res.status(200).json({
+                status: "success",
+                message: "Email verified successfully",
+                user,
+            });
+
         } catch (error) {
-            console.error("Error in user verification", error);
+            console.error("Error in user verification:", error);
             return res.status(500).json({ error: "Failed to verify user" });
         }
     };
-    
 }
 
-
 module.exports = { UserController };
-
