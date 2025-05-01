@@ -1,4 +1,4 @@
-const User = require("../../models/PatientRoutes");
+const User = require("../../models/Patient");
 const { createToken } = require("../../helpers/jwt");
 const { passwordCompare } = require("../../helpers/hashPassword");
 

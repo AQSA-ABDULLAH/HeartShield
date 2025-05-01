@@ -1,4 +1,4 @@
-const Patient = require("../../models/PatientRoutes.js");
+const Patient = require("../../models/Patient.js");
 const { hashPassword } = require("../../helpers/hashPassword");
 const { createToken } = require("../../helpers/jwt");
 const compileEmailTemplate = require("../../helpers/compile-email-template.js");
