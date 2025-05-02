@@ -6,6 +6,7 @@ const doctorsSchema = new mongoose.Schema({
     email: { type: String, trim: true, required: true, unique: true },
     license:{ type: String, trim: true },
     password: { type: String, required: true, trim: true },
+    is_approved: { type: Boolean, default: false },
     is_verified: { type: Boolean, default: false },
     tokens: [
         {

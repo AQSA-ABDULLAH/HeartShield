@@ -160,7 +160,7 @@ const Signup = () => {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="w-full py-2 bg-[#580101] hover:bg-[#bd3232] rounded"
+              className="w-full py-2 bg-[#580101] hover:bg-red-800 rounded"
             >
               Create Account
             </button>
