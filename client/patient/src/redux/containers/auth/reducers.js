@@ -21,7 +21,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
         error:null,
-        user: action.payload,
+        token: action.payload,
+        isSignedIn: true,
       };
     case type.SIGN_IN_FAILURE:
       return {

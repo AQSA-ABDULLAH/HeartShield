@@ -3,7 +3,7 @@ import { Routes, Route} from "react-router-dom";
 // import "./route.css";
 import Home from "../pages/Home.js";
 import Login from "../login-model/Login.js";
-import Signup from "../components/LoginModal/signup/Signup.js";
+import Signup from "../login-model/signup/Signup.js";
 
 function AppRoutes() {
 

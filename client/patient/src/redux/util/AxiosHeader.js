@@ -1,8 +1,10 @@
 import axios from "axios";
-import { jwtDecode as jwt_decode } from "jwt-decode"; // Import the jwtDecode named export as jwt_decode
+import { jwtDecode as jwt_decode } from "jwt-decode"; 
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const axiosInstance = axios.create({
-  baseURL: "https://transport-hub-tawny.vercel.app", // This is your backend API
+  baseURL: `${API_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
