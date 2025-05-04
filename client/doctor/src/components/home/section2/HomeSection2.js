@@ -2,16 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function HomeSection2() {
-  const DOCTOR_URL = process.env.REACT_APP_DOCTOR_URL;
-  const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
   const getLinkPath = (role) => {
     switch (role) {
       case "Patient":
         return "/login";
       case "Admin":
-        return `${ADMIN_URL}`;
+        return "/admin-login";
       case "Doctor":
-        return `${DOCTOR_URL}`;
+        return "/doctor-login";
       default:
         return "/";
     }
@@ -40,4 +38,3 @@ function HomeSection2() {
 }
 
 export default HomeSection2;
-
