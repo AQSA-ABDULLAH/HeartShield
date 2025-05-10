@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from "../atoms/buttons/Button";
+// import Button from "../atoms/buttons/Button";
 import styles from './loginModal.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { signUpWithEmail } from '../../redux/containers/auth/actions'
@@ -94,14 +94,15 @@ function LoginModal({ onClose }) {
                 )}
               alt=""></img>
             </div>
-            <Button
+            {/* <Button
               type="submit"
               primary
               radius={"0px"}
               hoverColor={"rgb(247, 131, 98)"}
               btnText={"LOGIN"}
               btnClick={handleSubmit}
-            />
+            /> */}
+            <button onClick={handleSubmit}>LOGIN</button>
 
           </form>
         </div>
