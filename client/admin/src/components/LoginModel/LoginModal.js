@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-// import Button from "../atoms/buttons/Button";
+import Button from "../atoms/buttons/Button";
 import styles from './loginModal.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { signUpWithEmail } from '../../redux/containers/auth/actions'
 
-function LoginModal({ onClose }) {
+function LoginModal() {
   const [email, setEmail] = useState('aqsaabdullah5834@gmail.com');
   const [password, setPassword] = useState('qwerty12345');
   const [showPassword, setShowPassword] = useState(false);
@@ -19,10 +19,12 @@ function LoginModal({ onClose }) {
   console.log(loading, error, payload);
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     let userData = {
       "email": email,
       "password": password,
     }
+    console.log(userData)
     if (email) {
       setEmailValid(true);
       if (password) {
@@ -94,15 +96,14 @@ function LoginModal({ onClose }) {
                 )}
               alt=""></img>
             </div>
-            {/* <Button
+            <Button
               type="submit"
               primary
               radius={"0px"}
               hoverColor={"rgb(247, 131, 98)"}
               btnText={"LOGIN"}
               btnClick={handleSubmit}
-            /> */}
-            <button onClick={handleSubmit}>LOGIN</button>
+            />
 
           </form>
         </div>

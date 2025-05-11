@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import Sidebar from "../components/sidebar/Sidebar";
 
 const Settings = () => {
   const [emailNotifications, setEmailNotifications] = useState(true);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="grid grid-cols-[250px_1fr] min-h-screen">
+  <Sidebar />
+  <div className="bg-gray-50 p-6 overflow-y-auto">
       <h2 className="text-3xl font-bold mb-1">Settings</h2>
       <p className="text-gray-500 mb-8">Manage your account and preferences</p>
 
@@ -87,6 +90,7 @@ const Settings = () => {
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 };
