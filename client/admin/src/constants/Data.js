@@ -12,49 +12,15 @@ export const Main = [
     text: "Home",
     route:'/'
   },
-  {
 
-    icon: <BsCreditCard2FrontFill size={20} />,
-    text: "Bookings",
-    route:'/bookings'
-
-  },
   {
-    icon: <BsCreditCard2FrontFill size={20} />,
-    text: "Rental Booking",
-    route:'/rental_booking'
-  },
-  {
-    icon: <BsCreditCard2FrontFill size={20} />,
-    text: "Manage Shipments",
-    route:'/manage-shipments'
-  },
-  {
-    icon: <BiSolidContact size={20}/>,
-    text: "Manage Parcels",
-    route:'/ParcelList'
-  },
-  {
-    icon: <BiSolidContact size={20}/>,
-    text: "Transport Managment",
-    route:'/transport-managment'
+    icon: <FaUsers size={20} />,
+    text: "Patient Mangment",
+    route:'/manage-patient'
   },
   {
     icon: <FaUsers size={20}/>,
-    text: "Manage Employees",
-    route:'/manageEmployees'
-  },
-];
-
-export const GeneralSettting = [
-  {
-    icon: <CgWebsite size={20} />,
-    text: "Website Content",
-    route:'/website-content'
-  },
-  {
-    icon: <IoMdSettings size={20}/>,
-    text: "Profile Settings",
-    route:'#'
+    text: "Doctor Managment",
+    route:'/manage-doctor'
   },
 ];
