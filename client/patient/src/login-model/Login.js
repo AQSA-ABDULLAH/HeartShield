@@ -28,7 +28,7 @@ function Login() {
     useEffect(() => {
       console.log("reduxState.isSignedIn:", reduxState.isSignedIn); // Debug this
       if (reduxState.isSignedIn) {
-        navigate('/');
+        navigate('/dashboard');
       }
     }, [reduxState.isSignedIn, navigate]);
     

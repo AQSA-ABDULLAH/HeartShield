@@ -6,19 +6,8 @@ import Home from "../pages/Home.js";
 import Login from "../login-model/Login.js";
 import Signup from "../login-model/signup/Signup.js";
 import Dashboard from "../pages/Dashboard.js";
-import { useSelector } from "react-redux";
+
 function AppRoutes() {
-  const isSignedIn = useSelector((state) => state.auth?.isSignedIn);
-
-    const navigate = useNavigate()
-
-   useEffect(() => {
-    if (!isSignedIn) {
-      navigate('/login'); 
-    } else {
-      console.log("User is signed in");
-    }
-  }, [isSignedIn, navigate]);
 
   return (
     <>
