@@ -1,17 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import "./App.css";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import AppRoutes from "./routes/Routes";
-function App() {
+import GlobalRoute from "./routes/GlobalRoute";
+import { Route, Routes } from "react-router-dom";
+import { Provider } from 'react-redux';
+
+import store from './redux/store'; // Import your Redux store
+
+const App = () => {
   return (
+    <>
     <Provider store={store}>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </Provider>
+      <Routes basename="/netlify.app">
+        <Route path="*" element={<GlobalRoute />} />
+      </Routes>
+      </Provider>
+    </>
   );
-}
+};
 
 export default App;
