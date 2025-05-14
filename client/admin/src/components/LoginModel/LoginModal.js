@@ -1,114 +1,139 @@
 import { useEffect, useState } from "react";
 import Button from "../atoms/buttons/Button";
-import styles from './loginModal.module.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { signUpWithEmail } from '../../redux/containers/auth/actions'
+import { useDispatch, useSelector } from "react-redux";
+import { signUpWithEmail } from "../../redux/containers/auth/actions";
 
 function LoginModal() {
-  const [email, setEmail] = useState('aqsaabdullah5834@gmail.com');
-  const [password, setPassword] = useState('qwerty12345');
+  const [email, setEmail] = useState("aqsaabdullah5834@gmail.com");
+  const [password, setPassword] = useState("qwerty12345");
   const [showPassword, setShowPassword] = useState(false);
   const [isEmailValid, setEmailValid] = useState(true);
   const [isPasswordValid, setPasswordValid] = useState(true);
   const { loading, error, payload } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
+
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  console.log(loading, error, payload);
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    let userData = {
-      "email": email,
-      "password": password,
-    }
-    console.log(userData)
+
+    const userData = {
+      email,
+      password,
+    };
+
     if (email) {
       setEmailValid(true);
       if (password) {
         setPasswordValid(true);
-        dispatch(signUpWithEmail(userData))
+        dispatch(signUpWithEmail(userData));
+      } else {
+        setPasswordValid(false);
       }
-
     } else {
       setEmailValid(false);
       setPasswordValid(false);
     }
-  }
+  };
 
   const handleChange = (event, type) => {
-    if (type === 'email') {
+    if (type === "email") {
       setEmail(event.target.value);
     } else {
       setPassword(event.target.value);
     }
-  }
+  };
 
   useEffect(() => {
-    const bodyElement = document.body;
-    bodyElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
     return () => {
-      bodyElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
     };
   }, []);
 
   return (
-    <>
-      <div
-        className={styles.modal_content} >
-        <div className={styles.logo_container}>
-      
-          <div className={styles.image}>
-          <img className={styles.logo_image} src="/assets/logo/LogoDark.png" alt=""></img>
-          <img className={styles.login_image} src="/assets/images/cars/image4.png" alt=""></img>
-          </div>
-        </div>
-        <div className={styles.login_form_container}>
-          <form className={styles.login_form} onSubmit={handleSubmit}>
-            <div>Login</div>
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              required
-              onChange={(e) => handleChange(e, 'email')}
-              style={{ border: isEmailValid ? "" : "2px solid red" }}
-            ></input>
-            <div className={styles.passwordInput}>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                required
-                onChange={(e) => handleChange(e, 'password')}
-                style={{ border: isPasswordValid ? "" : "2px solid red" }}
-              ></input>
-              <img
-                onPointerDown={togglePasswordVisibility}
-                className={styles.toggleIcon}
-                src={!showPassword ? (
-                  "/assets/images/login/solar_eye-bold.png"
-                ) : (
-                  "/assets/images/login/solar_eye-closed-bold.png"
-                )}
-              alt=""></img>
-            </div>
-            <Button
-              type="submit"
-              primary
-              radius={"0px"}
-              hoverColor={"rgb(247, 131, 98)"}
-              btnText={"LOGIN"}
-              btnClick={handleSubmit}
-            />
-
-          </form>
+    <div className="min-h-screen flex bg-[#2D0101] text-white font-inter">
+      {/* Left Side */}
+      <div className="hidden md:flex w-1/2 relative justify-center">
+        <img
+          src="/assest/login.png"
+          alt="Car"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute z-10 bottom-[61px] px-[150px]">
+          <h1 className="text-[32px] font-bold mb-4 leading-[48px]">HeartShield</h1>
+          <p className="text-[14px] leading-[27px] tracking-[1px]">
+            Empowering admin access with secure login
+          </p>
         </div>
       </div>
-    </>
+
+      {/* Right Side (Login Form) */}
+      <div className="w-full md:w-1/2 bg-white text-black flex items-center justify-center px-[140px] py-12">
+        <div className="w-full max-w-md space-y-[30px]">
+          <h2 className="text-[32px] font-bold leading-[48px]">Admin Login</h2>
+          <p className="text-[16px] text-[#999] leading-[24px]">
+            Please enter your credentials to access admin panel
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm mb-1">Email Address</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                required
+                onChange={(e) => handleChange(e, "email")}
+                className={`w-full px-4 py-2 bg-[#B55151] text-white rounded-md focus:outline-none ${
+                  !isEmailValid && "border-2 border-red-500"
+                }`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm mb-1">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  required
+                  onChange={(e) => handleChange(e, "password")}
+                  className={`w-full px-4 py-2 bg-[#B55151] text-white rounded-md focus:outline-none ${
+                    !isPasswordValid && "border-2 border-red-500"
+                  }`}
+                />
+                {/* <img
+                  onPointerDown={togglePasswordVisibility}
+                  src={
+                    showPassword
+                      ? "/assets/images/login/solar_eye-closed-bold.png"
+                      : "/assets/images/login/solar_eye-bold.png"
+                  }
+                  alt="toggle visibility"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer w-5"
+                /> */}
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#580101] hover:bg-red-800 text-white font-semibold py-2 rounded-md"
+            >
+              LOGIN
+            </button>
+          </form>
+
+          <p className="text-sm text-gray-400 text-center">
+            Forgot credentials? Contact your admin support.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
+
 export default LoginModal;

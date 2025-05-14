@@ -2,9 +2,9 @@
     background-color: #2D0101;
     height: 100vh;
     color: #fff;
-    width: 15.3rem;
+    width: 280px;
     padding: 1rem;
-    position: absolute;
+    position: fixed;
     overflow-y: auto;
     top: 0;
     left: 0;
@@ -17,7 +17,7 @@
 
 .sideLink {
     display: flex;
-    padding: 7.5px 12px;
+    padding: 9.5px 12px;
     width: 100%;
     align-items: center;
     justify-content: space-between;
@@ -32,7 +32,7 @@
 }
 
 .active {
-    background-color: #7E22CE;
+    background-color: #FFFFFF1A;
     color: #fff;
     font-weight: 700;
     border-radius: 10px;
@@ -43,7 +43,7 @@
     padding-right: 1rem;
     transition: all .2s ease-in-out;
     color: #fff;
-    background-color: #7E22CE;
+    background-color: #FFFFFF1A;
     border-radius: 10px;
 }
 
@@ -54,9 +54,7 @@
 
 }
 
-.headingText {
-    color: #3c6382;
-}
+
 
 .linkText {
     width: 80%;
@@ -83,6 +81,13 @@
     font-weight: bold;
     cursor: pointer;
     display: none;
+}
+
+.logout{
+    margin-right: 8.5rem;
+    text-transform: capitalize;
+    font-size: 0.8rem;
+    margin-bottom: 0px;
 }
 
 /* media queries */

@@ -26,5 +26,4 @@ const SidebarLinks = ({ data, handleLinkClick }) => {
   );
 };
 
-
 export default SidebarLinks;
