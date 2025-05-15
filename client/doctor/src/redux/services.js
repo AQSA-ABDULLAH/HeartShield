@@ -1,3 +1,3 @@
 export const API={
-    Login:'/api/user/patient_signIn',
+    Login:'/api/doctor/doctor_signIn',
 }

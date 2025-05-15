@@ -1,41 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import * as validate from "../../utils/validations/Validations";
-import { useNavigate } from "react-router-dom";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { app } from "../../firebase";
+import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
   const API_URL = process.env.REACT_APP_API_URL;
+  const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  const [license, setLicense] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phoneNumber: "",
+    license: "",
     password: "",
     confirmPassword: "",
-    age: ""
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Validation handling
     let error = "";
     switch (name) {
       case "fullName":
-        if (!validate.name(value)) error = "Name cannot have special characters or digits";
-        break;
-      case "license":
-        if (!validate.age(value)) error = "License must be a valid file";
+        if (!validate.name(value))
+          error = "Name cannot have special characters or digits";
         break;
       case "email":
         if (!validate.email(value)) error = "Email must fulfill requirements";
         break;
-      case "phoneNumber":
-        if (!validate.phoneNumber(value)) error = "Phone number must be 11 digits";
-        break;
       case "password":
-        if (!validate.password(value)) error = "Password must fulfill requirements";
+        if (!validate.password(value))
+          error = "Password must fulfill requirements";
         break;
       case "confirmPassword":
         if (value !== formData.password) error = "Passwords do not match";
@@ -48,21 +48,61 @@ const Signup = () => {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
+  const handelImage = () => {
+    inputRef.current.click();
+  };
+
+  useEffect(() => {
+    if (license) {
+      uploadFile(license);
+    }
+  }, [license]);
+
+  const uploadFile = (file) => {
+    const storage = getStorage(app);
+    const storageRef = ref(storage, "LicenseImages/" + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      (error) => {
+        console.error("Error uploading file:", error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageUrl(downloadURL);
+          console.log("File available at", downloadURL);
+        });
+      }
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Final check for password match
     if (formData.password !== formData.confirmPassword) {
-      setErrors((prev) => ({ ...prev, confirmPassword: "Passwords do not match" }));
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "Passwords do not match",
+      }));
       return;
     }
 
     const hasError = Object.values(errors).some((err) => err);
     if (!hasError) {
-      axios.post(`${API_URL}/api/user/patient_signUp`, formData)
+      axios
+        .post(`${API_URL}/api/doctor/doctor_signUp`, {
+          ...formData,
+          license: imageUrl, // Attach uploaded image URL
+        })
         .then((response) => {
           console.log("API response:", response.data);
-          navigate('/login');
+          navigate("/login");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -72,17 +112,19 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex bg-[#2D0101]">
-{/* Left Side (Image + Text) */}
-<div className="hidden md:flex relative w-[50%] bg-[#5c4444] text-white">
+      <div className="hidden md:flex relative w-[50%] bg-[#5c4444] text-white">
         <img
           src="/assest/doctor-signup.png"
           alt="doctors-image"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute z-10 bottom-[61px] px-[40px]">
-          <h1 className="text-[32px] font-bold mb-4 leading-[48px]">HeartShield</h1>
-          <p className='text-[14px] leading-[27px] tracking-[1px] w-[331px]'>
-          Join our network of healthcare professionals in revolutionizing cardiac care
+          <h1 className="text-[32px] font-bold mb-4 leading-[48px]">
+            HeartShield
+          </h1>
+          <p className="text-[14px] leading-[27px] tracking-[1px] w-[331px]">
+            Join our network of healthcare professionals in revolutionizing
+            cardiac care
           </p>
         </div>
       </div>
@@ -93,7 +135,7 @@ const Signup = () => {
           Create your account to start monitoring your heart health
         </p>
 
-        <form className="text-[14px] space-y-[24px]">
+        <form onSubmit={handleSubmit} className="text-[14px] space-y-[24px]">
           <div>
             <label className="block mb-[6px]">Full Name</label>
             <input
@@ -103,7 +145,9 @@ const Signup = () => {
               placeholder="Enter your full name"
               className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101]"
             />
-            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+            {errors.fullName && (
+              <p className="text-red-500 text-sm">{errors.fullName}</p>
+            )}
           </div>
 
           <div>
@@ -115,19 +159,24 @@ const Signup = () => {
               placeholder="Enter your email"
               className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101]"
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
 
           <div>
             <label className="block mb-[6px]">Medical License Upload</label>
-            <input
-              name="license"
-              type="file"
-              onChange={handleChange}
-              placeholder="License upload"
-              className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101]"
-            />
-            {errors.license && <p className="text-red-500 text-sm">{errors.license}</p>}
+            <div onClick={handelImage}>
+              <input
+                type="file"
+                id="license"
+                accept="image/png, image/jpeg"
+                required
+                ref={inputRef}
+                onChange={(e) => setLicense(e.target.files[0])}
+                className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101] cursor-pointer"
+              />
+            </div>
           </div>
 
           <div>
@@ -139,7 +188,9 @@ const Signup = () => {
               placeholder="Create password"
               className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101]"
             />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
           </div>
 
           <div>
@@ -151,13 +202,16 @@ const Signup = () => {
               placeholder="Confirm password"
               className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101]"
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">
+                {errors.confirmPassword}
+              </p>
+            )}
           </div>
 
           <div className="py-[40px]">
             <button
               type="submit"
-              onClick={handleSubmit}
               className="w-full py-2 bg-[#580101] hover:bg-red-800 rounded"
             >
               Create Account
@@ -167,7 +221,12 @@ const Signup = () => {
 
         <p className="text-sm mt-4 text-center text-gray-300">
           Already have an account?{" "}
-          <span className="text-[#FF4444] cursor-pointer">Sign in</span>
+          <Link
+            to="/login"
+            className="text-[#FF4444] hover:underline cursor-pointer"
+          >
+            Sign in
+          </Link>
         </p>
       </div>
     </div>
@@ -175,3 +234,4 @@ const Signup = () => {
 };
 
 export default Signup;
+
