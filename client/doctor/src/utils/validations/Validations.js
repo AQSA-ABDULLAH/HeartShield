@@ -19,11 +19,18 @@ export function name(name) {
 
   return nameRegex.test(name);
 }
+export function age(age) {
+  if (age === "") return true;
 
-export function title(title){
-  if (title === "") return true;
+  const ageNum = Number(age);
 
-  const titleRegex = /^[A-Za-z'\s]+$/;
-
-  return titleRegex.test(title);
+  return Number.isInteger(ageNum) && ageNum >= 1 && ageNum <= 120;
 }
+export function phoneNumber(phoneNumber) {
+  if (phoneNumber === "") return true;
+
+  const phoneRegex = /^\d{11}$/; // Adjust the regex based on your phone number format
+
+  return phoneRegex.test(phoneNumber);
+}
+

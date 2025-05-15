@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Button from "../atoms/buttons/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpWithEmail } from "../../redux/containers/auth/actions";
+import { Link } from "react-router-dom";
 
 function LoginModal() {
   const [email, setEmail] = useState("aqsaabdullah5834@gmail.com");
@@ -63,9 +63,11 @@ function LoginModal() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute z-10 bottom-[61px] px-[150px]">
-          <h1 className="text-[32px] font-bold mb-4 leading-[48px]">HeartShield</h1>
+          <h1 className="text-[32px] font-bold mb-4 leading-[48px]">
+            HeartShield
+          </h1>
           <p className="text-[14px] leading-[27px] tracking-[1px]">
-            Empowering admin access with secure login
+            Revolutionizing heart health monitoring with artificial intelligence
           </p>
         </div>
       </div>
@@ -73,7 +75,7 @@ function LoginModal() {
       {/* Right Side (Login Form) */}
       <div className="w-full md:w-1/2 bg-white text-black flex items-center justify-center px-[140px] py-12">
         <div className="w-full max-w-md space-y-[30px]">
-          <h2 className="text-[32px] font-bold leading-[48px]">Admin Login</h2>
+          <h2 className="text-[32px] font-bold leading-[48px]">Doctor Login</h2>
           <p className="text-[16px] text-[#999] leading-[24px]">
             Please enter your credentials to access admin panel
           </p>
@@ -123,12 +125,15 @@ function LoginModal() {
               type="submit"
               className="w-full bg-[#580101] hover:bg-red-800 text-white font-semibold py-2 rounded-md"
             >
-              LOGIN
+              SIGN IN
             </button>
           </form>
 
           <p className="text-sm text-gray-400 text-center">
-            Forgot credentials? Contact your admin support.
+            Don’t have an account?{" "}
+            <Link to="/signup" className="text-[#FF4444] hover:underline">
+              Sign up
+            </Link>
           </p>
         </div>
       </div>

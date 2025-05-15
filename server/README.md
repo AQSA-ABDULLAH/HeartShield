@@ -14,5 +14,5 @@ DATABASE=mongodb://127.0.0.1:27017/heartshield
 JWT_SECRET_KEY=a9e1d8bd9a15e5c6f9f56b0d8ad4eac9f
 
 # SMTP configuration for sending emails
-SMTP_MAIL= aqsaabdullah38403@gmail.com
-SMTP_PASSWORD=hjmw fekt okyx jsjz
+SMTP_MAIL= usmaniftikhar438@gmail.com
+SMTP_PASSWORD=ewgc upss kuyz jfub

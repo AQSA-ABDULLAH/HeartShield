@@ -7,6 +7,7 @@ import ApprovedReports from "../pages/ApprovedReports/ApprovedReports";
 import Notifications from "../pages/Notifications/Notifications"
 import CaseDetails from "../components/section/review-cases/CaseDetails";
 import Settings from "../pages/Settings/Settings"
+import Signup from "../login-model/signup/Signup";
 
 const RoutesStack = () => {
   return (
@@ -14,6 +15,7 @@ const RoutesStack = () => {
       <div>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/review-cases" element={<ReviewCases />} />
           <Route path="/approved-reports" element={<ApprovedReports />} />

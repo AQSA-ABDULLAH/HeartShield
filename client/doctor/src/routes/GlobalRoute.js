@@ -5,18 +5,27 @@ import Sidebar from "../components/molecules/sidebar/Sidebar";
 import Login from "../pages/Login/Login";
 import {Route,Routes} from 'react-router-dom'
 import { useSelector } from "react-redux";
+import Signup from "../login-model/signup/Signup";
+import { useLocation } from 'react-router-dom';
+
 const GlobalRoute = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const navigate = useNavigate();
+  const location = useLocation(); // 👈 get current path
 
   useEffect(() => {
     if (!isSignedIn) {
-      navigate('/login'); 
+      if (location.pathname !== '/login' && location.pathname !== '/signup') {
+        navigate('/login');
+      }
     } else {
-      navigate('/'); 
+      if (location.pathname === '/login' || location.pathname === '/signup') {
+        navigate('/');
+      }
     }
-  }, [isSignedIn, navigate]);
+  }, [isSignedIn, navigate, location]);
+
 
   return (
     <>
@@ -33,6 +42,7 @@ const GlobalRoute = () => {
         (
           <Routes>
             <Route path='/login' element={<Login />}/>
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         )
       }
