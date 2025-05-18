@@ -5,7 +5,7 @@ const initialState = {
   error: null,
   user:null,
   userId: null,
-  isSignedIn: false,
+  isSignedIn: !!localStorage.getItem('access_token'),
   payload:null
 };
 
@@ -14,15 +14,17 @@ export default function reducer(state = initialState, action) {
     case type.SIGN_IN_REQUEST:
       return {
         ...state,
-        loading:true
+        loading:true,
+        isSignedIn: false
       };
     case type.SIGN_IN_SUCCESS:
       return {
         ...state,
         loading: false,
         error:null,
-        token: action.payload,
-        isSignedIn: true,
+        user: action.payload,
+        isSignedIn: true, 
+
       };
     case type.SIGN_IN_FAILURE:
       return {
@@ -33,13 +35,13 @@ export default function reducer(state = initialState, action) {
     case type.SET_SIGNED_IN:
       return{
         ...state,
-        isSignedIn:true,
         user: action.payload,
 
       };
     case type.SET_SIGNED_OUT:
       return{
         ...state,
+        isSignedIn: false,
         loading:true,
       } 
       case type.SIGN_OUT_SUCCESS:
@@ -47,7 +49,7 @@ export default function reducer(state = initialState, action) {
           ...state,
           loading: false,
           isSignedIn: false,
-          userId: null
+          user: null
         };
       case type.SIGN_OUT_FAILURE:
         return {

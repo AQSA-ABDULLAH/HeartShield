@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import * as validate from "../../utils/validations/Validations";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { app } from "../../firebase";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -71,7 +76,9 @@ const Signup = () => {
         console.log("Upload is " + progress + "% done");
       },
       (error) => {
-        console.error("Error uploading file:", error);
+        console.error("Upload error code:", error.code);
+        console.error("Upload error message:", error.message);
+        console.error("Full error:", error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -166,17 +173,29 @@ const Signup = () => {
 
           <div>
             <label className="block mb-[6px]">Medical License Upload</label>
-            <div onClick={handelImage}>
-              <input
-                type="file"
-                id="license"
-                accept="image/png, image/jpeg"
-                required
-                ref={inputRef}
-                onChange={(e) => setLicense(e.target.files[0])}
-                className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101] cursor-pointer"
-              />
+
+            {/* Styled button to trigger file input */}
+            <div
+              onClick={handelImage}
+              className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent text-center cursor-pointer hover:bg-[#8d3b3b]"
+            >
+              {license ? license.name : "Upload Medical License"}
             </div>
+
+            {/* Hidden file input */}
+            <input
+              type="file"
+              id="license"
+              accept="image/png, image/jpeg"
+              required
+              ref={inputRef}
+              onChange={(e) => {
+                if (e.target.files[0]) {
+                  setLicense(e.target.files[0]);
+                }
+              }}
+              className="hidden"
+            />
           </div>
 
           <div>
@@ -203,9 +222,7 @@ const Signup = () => {
               className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent focus:outline-none focus:border-[#580101]"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm">
-                {errors.confirmPassword}
-              </p>
+              <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
             )}
           </div>
 
@@ -234,4 +251,3 @@ const Signup = () => {
 };
 
 export default Signup;
-

@@ -1,10 +1,8 @@
 import axios from "axios";
-import { jwtDecode as jwt_decode } from "jwt-decode"; 
-
+import { jwtDecode as jwt_decode } from "jwt-decode"; // Import the jwtDecode named export as jwt_decode
 const API_URL = process.env.REACT_APP_API_URL;
-
 const axiosInstance = axios.create({
-  baseURL: `${API_URL}`,
+   baseURL: `${API_URL}`, // This is your backend API
   headers: {
     "Content-Type": "application/json",
   },
@@ -57,3 +55,4 @@ const getUserIdFromToken = () => {
 };
 
 export { axiosInstance, getUserIdFromToken };
+

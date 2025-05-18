@@ -1,60 +1,72 @@
-import { put, takeLatest, call } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import * as type from "./constants";
-import * as actions from "./actions";
 import { axiosInstance } from "../../util/AxiosHeader";
+import { API } from "../../services";
+import Swal from 'sweetalert2';
 
-
-
-//Without token Authentication Data calls
-
-// axiosInstance
-//   .get("/public-endpoint", { headers: { withoutAuth: true } })
-//   .then((response) => console.log(response))
-//   .catch((error) => console.error(error));
-
-// //with token Authentication Data calls
-
-// axiosInstance
-//   .get("/private-endpoint", { headers: { withoutAuth: false } })
-//   .then((response) => console.log(response))
-//   .catch((error) => console.error(error));
 
 function* signIn(action) {
   try {
     const { payload: userData } = action;
-
-    // Use yield to wait for the result of the async function
-    const { token, message, status } = yield call(
+    const res = yield call(
       axiosInstance.post,
-      "/api/user/patient_signIn",
+      API.Login,
       userData
     );
-    localStorage.setItem("access_token", token);
 
-    yield put({
-      type: type.SIGN_IN_SUCCESS,
-      payload: token,
-    });
+    if (res.token) {
+      yield put({
+        type: type.SIGN_IN_SUCCESS,
+        payload: res.token,
+      });
+      localStorage.setItem("access_token", res.token);
+      yield call([Swal, 'fire'], {
+        icon: 'success',
+        title: 'Logged in successfully!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } else if (res.status==='failed') {
+      yield call([Swal, 'fire'], {
+        icon: 'error',
+        title: 'Login failed!',
+        text: res.message,
+      });
+      yield put({ type: type.SIGN_IN_FAILURE, payload: res.error });
+    } else {
+      yield call([Swal, 'fire'], {
+        icon: 'error',
+        title: 'Login failed!',
+        text: 'Unexpected error occurred.',
+      });
+
+      yield put({ type: type.SIGN_IN_FAILURE, payload: 'Unexpected error occurred' });
+    }
+
   } catch (error) {
-    yield put({ type: type.SIGN_IN_FAILURE, payload: error.message });
-    // console.error("Sign Up Error:", error.message);
+    yield call([Swal, 'fire'], {
+      icon: 'error',
+      title: 'Login failed!',
+      text: 'An exception occurred.',
+    });
+
+    yield put({ type: type.SIGN_IN_FAILURE, payload: error });
   }
 }
 
+
 function* signOutSaga() {
-  console.log("working");
   try {
     localStorage.removeItem("access_token");
     yield put({
       type: type.SIGN_OUT_SUCCESS,
-      // Assuming the response data is in the `data` property
     });
   } catch (error) {
     yield put({ type: type.SIGN_OUT_FAILURE, payload: error.message });
   }
 }
 
-function* checkUserSessionSaga() {}
+
 
 function* watchSignOut() {
   yield takeLatest(type.SET_SIGNED_OUT, signOutSaga);
@@ -62,8 +74,8 @@ function* watchSignOut() {
 function* watchSignIn() {
   yield takeLatest(type.SIGN_IN_REQUEST, signIn);
 }
-function* watchsession() {
-  yield takeLatest(type.CHECK_USER_SESSION, checkUserSessionSaga);
-}
 
-export const authsaga = [watchSignIn(), watchsession(), watchSignOut()];
+
+export const authsaga = [watchSignIn(), watchSignOut()];
+
+

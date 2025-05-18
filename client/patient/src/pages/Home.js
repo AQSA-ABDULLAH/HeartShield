@@ -1,7 +1,7 @@
 import React from "react";
-import HomeSection1 from "../components/home/section1/HomeSection1";
-import HomeSection2 from "../components/home/section2/HomeSection2";
-import Header from "../components/home/header/Header";
+import HomeSection1 from "../components/section/home/section1/HomeSection1";
+import HomeSection2 from "../components/section/home/section2/HomeSection2";
+import Header from "../components/section/home/header/Header";
 
 function Home() {
   return (
