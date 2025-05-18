@@ -1,11 +1,13 @@
 const express = require('express');
 const { DoctorController } = require('../controllers/doctor/doctorRegistration'); 
 const { doctorLogin } = require('../controllers/doctor/doctorLogin');
+const ApprovedController = require("../controllers/doctor/adminApproved");
 const router = express.Router();
 require("../db/connection")
 
 // PUBLIC ROUTES
 router.post("/doctor_signUp", DoctorController.doctorRegistration);
+router.patch("/approved", ApprovedController.approved);
 router.post("/doctor_signIn", doctorLogin);
 
 router.post("/mail_verification/:id",DoctorController.mailVerification )
