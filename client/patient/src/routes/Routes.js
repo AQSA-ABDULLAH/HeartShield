@@ -8,6 +8,7 @@ import ECGUploader from "../pages/Upload-ECG/Upload-ECG";
 import Reports from "../pages/Reports/Reports";
 import Notifications from "../pages/Notificatons/Notifications";
 import Settings from "../pages/Settings/Settings";
+import ForgetPasswordOtp from "../login-model/forget-password/OtpCode";
 
 const RoutesStack = () => {
   return (
@@ -16,6 +17,7 @@ const RoutesStack = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forget-password-otp" element={<ForgetPasswordOtp/>}/>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload-ecg" element={<ECGUploader />} />

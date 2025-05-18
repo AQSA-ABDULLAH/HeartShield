@@ -126,7 +126,7 @@ function LoginModal() {
                 <input type="checkbox" className="mr-2" />
                 Remember me
               </label>
-              <Link to="#" className="text-[#FF4444] hover:underline">
+              <Link to="/forget-password" className="text-[#FF4444] hover:underline">
                 Forgot Password?
               </Link>
             </div>
