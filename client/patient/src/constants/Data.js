@@ -1,5 +1,10 @@
 // import { GiGymBag } from "react-icons/gi";
-import { FaUsers } from "react-icons/fa";
+import {
+  FaUpload,
+  FaFileAlt,
+  FaBell,
+  FaCog,
+} from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 
 export const Main = [
@@ -9,22 +14,22 @@ export const Main = [
     route:'/dashboard' // ✅ This is correct for home
   },
   {
-    icon: <FaUsers size={20} />,
-    text: "Review Cases",
-    route:'/review-cases' // ✅ This is correct
+    icon: <FaUpload size={20} />,
+    text: "Upload ECG",
+    route:'/upload-ecg' // ✅ This is correct
   },
   {
-    icon: <FaUsers size={20}/>,
-    text: "Approved Reports",
-    route:'/approved-reports'
+    icon: <FaFileAlt size={20}/>,
+    text: "Reports",
+    route:'/reports'
   },
     {
-    icon: <FaUsers size={20}/>,
+    icon: <FaBell size={20}/>,
     text: "Notifications",
     route:'/notifications'
   },
     {
-    icon: <FaUsers size={20}/>,
+    icon: <FaCog  size={20}/>,
     text: "Settings",
     route:'/settings'
   },

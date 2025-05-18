@@ -1,10 +1,6 @@
-import React from 'react';
-import Sidebar from '../components/sidebar/Sidebar';
 
-export default function ECGUploader() {
+export default function Uploader() {
   return (
-    <div className="flex max-h-[100vh]">
-          <Sidebar />
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Section - File Upload */}
@@ -88,7 +84,6 @@ export default function ECGUploader() {
           </form>
         </div>
       </div>
-    </div>
     </div>
   );
 }

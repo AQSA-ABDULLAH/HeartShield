@@ -1,79 +1,71 @@
-import React from "react";
 
 const reports = [
   {
-    name: "Sarah Johnson",
-    date: "2024-01-15",
-    risk: "High Risk",
-    riskColor: "bg-red-100 text-red-600 border-red-300"
-  },
-  {
-    name: "Michael Chen",
-    date: "2024-01-14",
-    risk: "Medium Risk",
-    riskColor: "bg-yellow-100 text-yellow-600 border-yellow-300"
-  },
-  {
-    name: "Emma Davis",
-    date: "2024-01-13",
+    date: "March 15, 2024",
+    time: "9:41 AM",
     risk: "Low Risk",
-    riskColor: "bg-green-100 text-green-600 border-green-300"
+    color: "bg-green-100 text-green-600",
   },
   {
-    name: "James Wilson",
-    date: "2024-01-12",
-    risk: "High Risk",
-    riskColor: "bg-red-100 text-red-600 border-red-300"
-  },
-  {
-    name: "Maria Garcia",
-    date: "2024-01-11",
+    date: "February 28, 2024",
+    time: "9:41 AM",
     risk: "Medium Risk",
-    riskColor: "bg-yellow-100 text-yellow-600 border-yellow-300"
-  }
+    color: "bg-yellow-100 text-yellow-600",
+  },
+  {
+    date: "February 15, 2024",
+    time: "9:41 AM",
+    risk: "High Risk",
+    color: "bg-red-100 text-red-600",
+  },
+  {
+    date: "January 30, 2024",
+    time: "9:41 AM",
+    risk: "Low Risk",
+    color: "bg-green-100 text-green-600",
+  },
 ];
 
-export default function ApprovedReportsTable() {
+export default function ReportsTable() {
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="px-6 py-4">
-          <h2 className="text-2xl font-bold mb-1">Approved Reports</h2>
+  <div className="flex-1 min-h-screen bg-gray-50 p-6 overflow-y-auto">
+        <div className="w-full">
+          <h1 className="text-2xl font-bold text-gray-800 mb-1">
+            Your HeartShield Reports
+          </h1>
           <p className="text-sm text-gray-500 mb-4">
-            View finalized patient reports.
+            View and download your past risk predictions
           </p>
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr className="text-left border-b">
-                <th className="py-2 font-medium">Patient Name</th>
-                <th className="py-2 font-medium">Date</th>
-                <th className="py-2 font-medium">Risk Level</th>
-                <th className="py-2 font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reports.map((report, i) => (
-                <tr key={i} className="border-t">
-                  <td className="py-2">{report.name}</td>
-                  <td className="py-2">{report.date}</td>
-                  <td className="py-2">
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${report.riskColor}`}
-                    >
-                      {report.risk}
-                    </span>
-                  </td>
-                  <td className="py-2">
-                    <button className="bg-[#2B0000] text-white text-xs px-4 py-1 rounded-md">
-                      View Report
-                    </button>
-                  </td>
-                </tr>
+
+          <div className="bg-white shadow rounded-lg p-6">
+            <p className="text-sm text-gray-500 mb-4">
+              Showing {reports.length} reports
+            </p>
+            <div className="divide-y">
+              {reports.map((report, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center py-4"
+                >
+                  <div>
+                    <p className="text-gray-800">{report.date}</p>
+                    <p className="text-xs text-gray-500">
+                      Uploaded at {report.time}
+                    </p>
+                  </div>
+                  <div
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${report.color}`}
+                  >
+                    {report.risk}
+                  </div>
+                  <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition text-sm">
+                    Download PDF
+                  </button>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   );
 }
