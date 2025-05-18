@@ -9,6 +9,10 @@ const patientsSchema = new mongoose.Schema({
     age: { type: Number, trim: true },
     is_admin: { type: Boolean, default: false, required: true },
     is_verified: { type: Boolean, default: false },
+      otp: {
+        type: Number,
+        required: true
+    },
     tokens: [
         {
             token: {

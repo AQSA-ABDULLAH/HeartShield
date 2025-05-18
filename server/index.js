@@ -5,13 +5,13 @@ const dotenv = require('dotenv');
 // Load environment variables from config.env
 dotenv.config({ path: './config.env' });
 
-// Routes
-const userRoutes = require('./routes/PatientRoute.js');
-const doctorRoutes = require('./routes/doctorRoute.js');
-
 // Express
 const app = express();
 app.use(express.json());
+
+// Routes
+const userRoutes = require('./routes/PatientRoute.js');
+const doctorRoutes = require('./routes/doctorRoute.js');
 
 // Cors
 app.use(cors());

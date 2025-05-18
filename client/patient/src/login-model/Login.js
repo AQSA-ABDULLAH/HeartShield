@@ -121,6 +121,16 @@ function LoginModal() {
               </div>
             </div>
 
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Remember me
+              </label>
+              <Link to="#" className="text-[#FF4444] hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#580101] hover:bg-red-800 text-white font-semibold py-2 rounded-md"
@@ -143,7 +153,6 @@ function LoginModal() {
 
 export default LoginModal;
 
-
 // import { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
 // import { signUpWithEmail } from "../redux/containers/auth/actions";
@@ -157,29 +166,26 @@ export default LoginModal;
 //     const [loginData, setLoginData] = useState({
 //       email: "",
 //       password: "",
-//     }); 
-  
+//     });
+
 //     const handleChange = (e) => {
 //       console.log(e.target.value);
 //       const { name, value } = e.target;
 //       setLoginData((prev) => ({ ...prev, [name]: value }));
 //     };
-  
+
 //     const handleSubmit = async (e) => {
 //       e.preventDefault();
 //       await dispatch(signUpWithEmail(loginData));
 //       console.log("reduxState.isSignedIn:", reduxState.isSignedIn);
 //     };
-  
+
 //     useEffect(() => {
 //       console.log("reduxState.isSignedIn:", reduxState.isSignedIn); // Debug this
 //       if (reduxState.isSignedIn) {
 //         navigate('/dashboard');
 //       }
-//     }, [reduxState.isSignedIn, navigate]); 
-    
-  
-  
+//     }, [reduxState.isSignedIn, navigate]);
 
 //   return (
 //     <div className="min-h-screen flex bg-[#2D0101] text-white font-inter">
@@ -235,8 +241,7 @@ export default LoginModal;
 //               </label>
 //               <Link to="#" className="text-[#FF4444] hover:underline">Forgot Password?</Link>
 //             </div>
-              
-              
+
 //               {/* Submit Button */}
 //             <button
 //               type="submit"
