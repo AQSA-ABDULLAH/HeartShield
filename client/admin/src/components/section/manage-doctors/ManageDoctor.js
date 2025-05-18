@@ -57,7 +57,7 @@ const DoctorManagement = () => {
               <tr key={index}>
                 <td className="px-6 py-4">{doctor.fullName}</td>
                 <td className="px-6 py-4">
-                  {doctor.is_verified ? (
+                  {doctor.license_status === "verified" ? (
                     <span className="text-green-600 bg-green-100 px-3 py-1 rounded-full text-xs font-medium inline-flex items-center">
                       <svg
                         className="w-4 h-4 mr-1"
