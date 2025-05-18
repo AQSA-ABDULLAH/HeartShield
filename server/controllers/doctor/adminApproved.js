@@ -1,5 +1,41 @@
 const Doctor = require("../../models/Doctor");
 
+const getAllDoctors = async (req, res) => {
+    try {
+        const doctors = await Doctor.find().sort({ createdAt: -1 }); // latest first
+
+        res.status(200).json({
+            message: "Doctors fetched successfully",
+            doctors,
+        });
+    } catch (error) {
+        console.error("Error fetching doctors:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const getDoctor = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const doctor = await Doctor.findById(id);
+
+        if (!doctor) {
+            return res.status(404).json({ message: "Doctor not found" });
+        }
+
+        res.status(200).json({
+            message: "Doctor fetched successfully",
+            doctor,
+        });
+    } catch (error) {
+        console.error("Error fetching doctor:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
+
 const approved = async (req, res) => {
     try {
         const { doctorId } = req.body;
@@ -25,4 +61,4 @@ const approved = async (req, res) => {
     }
 };
 
-module.exports = { approved };
+module.exports = { approved, getAllDoctors, getDoctor };

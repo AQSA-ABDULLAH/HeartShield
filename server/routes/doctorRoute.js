@@ -9,6 +9,8 @@ require("../db/connection")
 router.post("/doctor_signUp", DoctorController.doctorRegistration);
 router.patch("/approved", ApprovedController.approved);
 router.post("/doctor_signIn", doctorLogin);
+router.get("/get-doctors", ApprovedController.getAllDoctors);
+router.get("/get-user/:id", ApprovedController.getDoctor);
 
 router.post("/mail_verification/:id",DoctorController.mailVerification )
 // "http://localhost:3000/mail-verification?id='+savedUser._id+'"
