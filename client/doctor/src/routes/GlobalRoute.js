@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import RoutesStack from "./Routes";
 import Sidebar from "../components/molecules/sidebar/Sidebar";
+import ForgetPasswordOtp from "../login-model/forget-password/OtpCode";
 import Login from "../pages/Login/Login";
 import {Route,Routes} from 'react-router-dom'
 import { useSelector } from "react-redux";
@@ -14,17 +15,19 @@ const GlobalRoute = () => {
   const navigate = useNavigate();
   const location = useLocation(); // 👈 get current path
 
-  useEffect(() => {
-    if (!isSignedIn) {
-      if (location.pathname !== '/login' && location.pathname !== '/signup') {
-        navigate('/login');
+    useEffect(() => {
+      const publicRoutes = ["/login", "/signup", "/forget-password-otp"];
+  
+      if (!isSignedIn) {
+        if (!publicRoutes.includes(location.pathname)) {
+          navigate("/login");
+        }
+      } else {
+        if (publicRoutes.includes(location.pathname)) {
+          navigate("/dashboard");
+        }
       }
-    } else {
-      if (location.pathname === '/login' || location.pathname === '/signup') {
-        navigate('/');
-      }
-    }
-  }, [isSignedIn, navigate, location]);
+    }, [isSignedIn, navigate, location.pathname]);
 
 
   return (
@@ -43,6 +46,7 @@ const GlobalRoute = () => {
           <Routes>
             <Route path='/login' element={<Login />}/>
             <Route path="/signup" element={<Signup />} />
+             <Route path="/forget-password-otp" element={<ForgetPasswordOtp />} />
           </Routes>
         )
       }

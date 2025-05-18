@@ -6,6 +6,7 @@ import ReviewCases from "../pages/ReviewCases/ReviewCases";
 import ApprovedReports from "../pages/ApprovedReports/ApprovedReports";
 import Notifications from "../pages/Notifications/Notifications"
 import CaseDetails from "../components/section/review-cases/CaseDetails";
+import ForgetPasswordOtp from "../login-model/forget-password/OtpCode";
 import Settings from "../pages/Settings/Settings"
 import Signup from "../login-model/signup/Signup";
 
@@ -22,6 +23,7 @@ const RoutesStack = () => {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/review-case-details" element={<CaseDetails />} />
+          <Route path="/forget-password-otp" element={<ForgetPasswordOtp />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

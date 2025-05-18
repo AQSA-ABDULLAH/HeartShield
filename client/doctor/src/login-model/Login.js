@@ -121,6 +121,19 @@ function LoginModal() {
               </div>
             </div>
 
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Remember me
+              </label>
+              <Link
+                to="/forget-password-otp"
+                className="text-[#FF4444] hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#580101] hover:bg-red-800 text-white font-semibold py-2 rounded-md"
