@@ -6,6 +6,8 @@ import Home from "../pages/Home";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ECGUploader from "../pages/Upload-ECG/Upload-ECG";
 import Reports from "../pages/Reports/Reports";
+import Notifications from "../pages/Notificatons/Notifications";
+import Settings from "../pages/Settings/Settings";
 
 const RoutesStack = () => {
   return (
@@ -18,6 +20,8 @@ const RoutesStack = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload-ecg" element={<ECGUploader />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

@@ -1,89 +1,94 @@
 import React, { useState } from "react";
 
-export default function SettingsPage() {
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [emailAlerts, setEmailAlerts] = useState(true);
-  const [criticalAlerts, setCriticalAlerts] = useState(true);
+const SettingPage = () => {
+  const [emailNotifications, setEmailNotifications] = useState(true);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold mb-1">Settings</h2>
-      <p className="text-sm text-gray-500 mb-6">
-        Manage your account and preferences.
-      </p>
+  <div className="bg-gray-50 p-6 overflow-y-auto">
+      <h2 className="text-3xl font-bold mb-1">Settings</h2>
+      <p className="text-gray-500 mb-8">Manage your account and preferences</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {/* Account Info */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h3 className="font-semibold text-lg mb-4">Account Information</h3>
-          <label className="block text-sm font-medium">Full Name</label>
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="w-full border mt-1 mb-4 px-3 py-2 rounded-md"
-          />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
+        {/* Account Settings */}
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Account Settings</h3>
+          <form className="space-y-4">
+            <div>
+              <label className="block text-sm mb-1">Full Name</label>
+              <input
+                type="text"
+                className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Email Address</label>
+              <input
+                type="email"
+                className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Phone Number</label>
+              <input
+                type="tel"
+                className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              />
+            </div>
 
-          <label className="block text-sm font-medium">Phone Number</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full border mt-1 mb-4 px-3 py-2 rounded-md"
-          />
+            <div className="text-sm text-red-500 underline cursor-pointer mt-1">
+              Change Password
+            </div>
 
-          <button className="w-full border border-black text-black px-4 py-2 rounded-md mb-4">
-            Change Password
-          </button>
-          <button className="w-full bg-[#330000] text-white px-4 py-2 rounded-md">
-            Save Changes
-          </button>
+            <button
+              type="submit"
+              className="w-full mt-4 bg-[#2C0000] text-white py-2 rounded-md hover:bg-[#3d0000]"
+            >
+              Save Changes
+            </button>
+          </form>
         </div>
 
         {/* Preferences */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h3 className="font-semibold text-lg mb-4">Preferences</h3>
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Preferences</h3>
 
-          <div className="flex items-center justify-between py-2">
-            <span>Email Alerts</span>
-            <label className="relative inline-flex items-center cursor-pointer">
+          <div className="flex justify-between items-center mb-2">
+            <div>
+              <p className="font-medium">Email Notifications</p>
+              <p className="text-xs text-gray-500">Receive updates via email</p>
+            </div>
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                className="sr-only peer"
-                checked={emailAlerts}
-                onChange={() => setEmailAlerts(!emailAlerts)}
+                className="sr-only"
+                checked={emailNotifications}
+                onChange={() => setEmailNotifications(!emailNotifications)}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#330000] rounded-full peer dark:bg-gray-300 peer-checked:bg-[#330000]"></div>
+              <div
+                className={`w-11 h-6 rounded-full ${
+                  emailNotifications ? "bg-[#2C0000]" : "bg-gray-300"
+                } flex items-center transition-colors`}
+              >
+                <div
+                  className={`h-5 w-5 bg-white rounded-full shadow-md transform duration-300 ${
+                    emailNotifications ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </div>
             </label>
           </div>
 
-          <div className="flex items-center justify-between py-2">
-            <span>Critical Case Alerts</span>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={criticalAlerts}
-                onChange={() => setCriticalAlerts(!criticalAlerts)}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#330000] rounded-full peer dark:bg-gray-300 peer-checked:bg-[#330000]"></div>
-            </label>
-          </div>
-
-          <div className="border-t my-4"></div>
-
-          <div className="py-2 text-sm text-[#330000] cursor-pointer hover:underline">
+          <p className="text-sm mt-6 underline cursor-pointer text-gray-800">
             Privacy Policy
-          </div>
+          </p>
 
-          <div className="py-2">
-            <button className="border border-red-400 text-red-500 text-sm px-4 py-2 rounded-md">
-              Delete Account
-            </button>
-          </div>
+          <p className="text-sm text-red-500 mt-10 cursor-pointer">
+            Delete Account
+          </p>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default SettingPage;
