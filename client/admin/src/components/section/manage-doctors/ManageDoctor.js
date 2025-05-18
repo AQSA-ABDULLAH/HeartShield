@@ -4,22 +4,41 @@ import axios from "axios";
 const DoctorManagement = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [doctors, setDoctors] = useState([]);
-useEffect(() => {
-  console.log("API_URL:", API_URL);
 
-  axios
-    .get(`${API_URL}/api/doctor/get-doctors`)
-    .then((res) => {
-      console.log("Response:", res);
-      const doctorData = res.data.doctors || [];
-      setDoctors(doctorData);
-    })
-    .catch((err) => {
-      console.error("Error fetching doctor data: ", err);
-    });
-}, []);
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
+  const fetchDoctors = () => {
+    axios
+      .get(`${API_URL}/api/doctor/get-doctors`)
+      .then((res) => {
+        const doctorData = res.data.doctors || [];
+        setDoctors(doctorData);
+      })
+      .catch((err) => {
+        console.error("Error fetching doctor data: ", err);
+      });
+  };
 
+  const handleVerify = async (doctorId) => {
+    try {
+      const res = await axios.patch(`${API_URL}/api/doctor/approved`, {
+        doctorId: doctorId,
+      });
+
+      console.log("Verified Response:", res.data);
+
+      // Update doctor list (optional: just update the specific doctor)
+      setDoctors((prevDoctors) =>
+        prevDoctors.map((doc) =>
+          doc._id === doctorId ? { ...doc, is_verified: true } : doc
+        )
+      );
+    } catch (error) {
+      console.error("Error verifying doctor:", error);
+    }
+  };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -64,7 +83,10 @@ useEffect(() => {
                 <td className="px-6 py-4 space-x-2">
                   {!doctor.is_verified ? (
                     <>
-                      <button className="bg-[#3b0a00] text-white px-4 py-1 rounded hover:bg-red-900">
+                      <button
+                        className="bg-[#3b0a00] text-white px-4 py-1 rounded hover:bg-red-900"
+                        onClick={() => handleVerify(doctor._id)}
+                      >
                         Verify License
                       </button>
                       <button className="border border-gray-300 text-gray-700 px-4 py-1 rounded hover:bg-gray-100">
