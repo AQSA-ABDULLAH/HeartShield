@@ -76,7 +76,7 @@ const DoctorManagement = () => {
                     </span>
                   ) : (
                     <span className="text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full text-xs font-medium">
-                      Pending
+                      {doctor.license_status}
                     </span>
                   )}
                 </td>

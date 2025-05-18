@@ -46,7 +46,11 @@ const approved = async (req, res) => {
 
         const doctor = await Doctor.findByIdAndUpdate(
             doctorId,
-            { is_approved: true, updatedAt: new Date() },
+            {
+                is_approved: true,
+                license_status: "verified",
+                updatedAt: new Date()
+            },
             { new: true }
         );
 
@@ -60,5 +64,6 @@ const approved = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
 
 module.exports = { approved, getAllDoctors, getDoctor };
