@@ -29,14 +29,44 @@ const DoctorManagement = () => {
 
       console.log("Verified Response:", res.data);
 
-      // Update doctor list (optional: just update the specific doctor)
+      // Update the local doctor list with new license_status
       setDoctors((prevDoctors) =>
         prevDoctors.map((doc) =>
-          doc._id === doctorId ? { ...doc, is_verified: true } : doc
+          doc._id === doctorId
+            ? {
+                ...doc,
+                is_verified: true,
+                license_status: "verified", // update this so UI updates instantly
+              }
+            : doc
         )
       );
     } catch (error) {
       console.error("Error verifying doctor:", error);
+    }
+  };
+
+  const handleReject = async (doctorId) => {
+    try {
+      const res = await axios.patch(`${API_URL}/api/doctor/reject`, {
+        doctorId: doctorId,
+      });
+
+      console.log("Rejected Response:", res.data);
+
+      setDoctors((prevDoctors) =>
+        prevDoctors.map((doc) =>
+          doc._id === doctorId
+            ? {
+                ...doc,
+                is_verified: false,
+                license_status: "rejected",
+              }
+            : doc
+        )
+      );
+    } catch (error) {
+      console.error("Error rejecting doctor:", error);
     }
   };
 
@@ -74,6 +104,10 @@ const DoctorManagement = () => {
                       </svg>
                       Verified
                     </span>
+                  ) : doctor.license_status === "rejected" ? (
+                    <span className="text-white bg-red-500 px-3 py-1 rounded-full text-xs font-medium">
+                      Rejected
+                    </span>
                   ) : (
                     <span className="text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full text-xs font-medium">
                       {doctor.license_status}
@@ -89,7 +123,10 @@ const DoctorManagement = () => {
                       >
                         Verify License
                       </button>
-                      <button className="border border-gray-300 text-gray-700 px-4 py-1 rounded hover:bg-gray-100">
+                      <button
+                        onClick={() => handleReject(doctor._id)}
+                        className="border border-gray-300 text-gray-700 px-4 py-1 rounded hover:bg-gray-100"
+                      >
                         Reject
                       </button>
                     </>

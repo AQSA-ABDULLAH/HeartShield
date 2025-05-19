@@ -8,6 +8,7 @@ require("../db/connection")
 // PUBLIC ROUTES
 router.post("/doctor_signUp", DoctorController.doctorRegistration);
 router.patch("/approved", ApprovedController.approved);
+router.patch("/reject", ApprovedController.reject);
 router.post("/doctor_signIn", doctorLogin);
 router.get("/get-doctors", ApprovedController.getAllDoctors);
 router.get("/get-user/:id", ApprovedController.getDoctor);
