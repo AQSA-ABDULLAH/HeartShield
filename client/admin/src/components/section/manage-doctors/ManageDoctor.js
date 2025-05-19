@@ -80,6 +80,7 @@ const DoctorManagement = () => {
               <th className="px-6 py-4">Doctor Name</th>
               <th className="px-6 py-4">License Status</th>
               <th className="px-6 py-4">Actions</th>
+              <th className="px-6 py-4">View License</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -133,6 +134,14 @@ const DoctorManagement = () => {
                   ) : (
                     <span className="text-gray-400 text-sm">No actions</span>
                   )}
+                </td>
+                <td className="px-6 py-4">
+                  <button
+                    className="border border-gray-300 text-gray-700 px-4 py-1 rounded hover:bg-gray-100"
+                    onClick={() => console.log("View license of", doctor._id)} // You can replace this with modal or link
+                  >
+                    View License
+                  </button>
                 </td>
               </tr>
             ))}
