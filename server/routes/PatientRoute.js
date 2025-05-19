@@ -2,7 +2,7 @@ const express = require('express');
 const { UserController } = require('../controllers/patient/userRegistration'); 
 const { userLogin } = require('../controllers/patient/userLogin');
 const {ForgetPasswordController} = require("../controllers/patient/forgetPassword");
-const {ProfileController} = require("../controllers/patient/profileController")
+const ProfileController = require("../controllers/patient/profileController");
 const router = express.Router();
 require("../db/connection")
 

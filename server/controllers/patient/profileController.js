@@ -13,7 +13,10 @@ const getAllPatients = async (req, res) => {
 // GET /get-patient/:id
 const getPatient = async (req, res) => {
   try {
-    const patient = await Patient.findOne({ _id: req.params.id, deletedAt: null });
+    const patient = await Patient.findOne({
+      _id: req.params.id,
+      deletedAt: null,
+    });
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
@@ -28,17 +31,18 @@ const getPatient = async (req, res) => {
 // DELETE /delete-patient/:id (Soft Delete)
 const deletePatient = async (req, res) => {
   try {
-    const updatedPatient = await Patient.findByIdAndUpdate(
-      req.params.id,
-      { deletedAt: new Date() },
-      { new: true }
-    );
+    const deletedPatient = await Patient.findByIdAndDelete(req.params.id);
 
-    if (!updatedPatient) {
+    if (!deletedPatient) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    res.status(200).json({ message: "Patient deleted successfully", patient: updatedPatient });
+    res
+      .status(200)
+      .json({
+        message: "Patient deleted permanently",
+        patient: deletedPatient,
+      });
   } catch (error) {
     res.status(500).json({ message: "Error deleting patient", error });
   }
