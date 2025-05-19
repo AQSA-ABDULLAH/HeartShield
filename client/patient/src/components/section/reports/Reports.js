@@ -9,8 +9,8 @@ const reports = [
   {
     date: "February 28, 2024",
     time: "9:41 AM",
-    risk: "Medium Risk",
-    color: "bg-yellow-100 text-yellow-600",
+    risk: "High Risk",
+    color: "bg-red-100 text-red-600",
   },
   {
     date: "February 15, 2024",

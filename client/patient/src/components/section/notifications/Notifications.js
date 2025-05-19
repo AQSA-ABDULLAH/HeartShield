@@ -28,7 +28,7 @@
   
   const NotificationsPanel = () => {
     return (
-      <div className="max-w-xl mx-auto p-6">
+      <div className=" p-6">
         <h2 className="text-2xl font-bold mb-1">Your Notifications</h2>
         <p className="text-gray-500 mb-6">
           See important updates from your doctors and system alerts
@@ -37,16 +37,16 @@
           {notifications.map((note) => (
             <div
               key={note.id}
-              className="bg-gray-100 rounded-xl p-4 shadow-sm hover:bg-gray-200 transition"
+              className="bg-gray-100 rounded-xl shadow-sm w-[800px] h-[100px] shrink-0 p-4 hover:bg-gray-200 transition"
             >
               <div className="flex items-start space-x-3">
                 <span
                   className={`mt-1 h-3 w-3 rounded-full ${
-                    note.unread ? "bg-red-600" : "bg-gray-400"
+                    note.unread ? "bg-[#2D0101]" : "bg-gray-400"
                   }`}
                 ></span>
                 <div>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium text-gray-800 mb-[15px]">
                     {note.message}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">{note.time}</p>
