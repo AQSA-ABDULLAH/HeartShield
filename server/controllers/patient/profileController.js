@@ -1,14 +1,21 @@
 const Patient = require("../../models/Patient");
 
 // GET /get-patients
+const EXCLUDED_PATIENT_IDS = ["682a630550eb09e5a9e3c3aa"];
+
 const getAllPatients = async (req, res) => {
   try {
-    const patients = await Patient.find({ deletedAt: null }); // Only active (not deleted)
+    const patients = await Patient.find({
+      deletedAt: null,
+      _id: { $nin: EXCLUDED_PATIENT_IDS },
+    });
+
     res.status(200).json(patients);
   } catch (error) {
     res.status(500).json({ message: "Error fetching patients", error });
   }
 };
+
 
 // GET /get-patient/:id
 const getPatient = async (req, res) => {
