@@ -4,40 +4,59 @@ import axios from "axios";
 const DoctorManagement = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchDoctors();
   }, []);
 
-  const fetchDoctors = () => {
-    axios
-      .get(`${API_URL}/api/doctor/get-doctors`)
-      .then((res) => {
-        const doctorData = res.data.doctors || [];
-        setDoctors(doctorData);
-      })
-      .catch((err) => {
-        console.error("Error fetching doctor data: ", err);
+  const bufferToBase64 = (buffer) => {
+    const binary = new Uint8Array(buffer).reduce(
+      (acc, byte) => acc + String.fromCharCode(byte),
+      ""
+    );
+    return window.btoa(binary);
+  };
+
+  const fetchDoctors = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/doctor/get-doctors`);
+      const doctorData = res.data.doctors || [];
+
+      const updatedDoctors = doctorData.map((doc) => {
+        let licenseUrl = null;
+        if (doc.license && doc.license.data && doc.license.contentType) {
+          try {
+            const base64String = bufferToBase64(doc.license.data.data);
+            licenseUrl = `data:${doc.license.contentType};base64,${base64String}`;
+          } catch (error) {
+            console.error("Error converting license to base64:", error);
+          }
+        }
+
+        return {
+          ...doc,
+          licenseUrl,
+        };
       });
+
+      setDoctors(updatedDoctors);
+    } catch (err) {
+      console.error("Error fetching doctor data: ", err);
+    }
   };
 
   const handleVerify = async (doctorId) => {
     try {
       const res = await axios.patch(`${API_URL}/api/doctor/approved`, {
-        doctorId: doctorId,
+        doctorId,
       });
 
-      console.log("Verified Response:", res.data);
-
-      // Update the local doctor list with new license_status
-      setDoctors((prevDoctors) =>
-        prevDoctors.map((doc) =>
+      setDoctors((prev) =>
+        prev.map((doc) =>
           doc._id === doctorId
-            ? {
-                ...doc,
-                is_verified: true,
-                license_status: "verified", // update this so UI updates instantly
-              }
+            ? { ...doc, is_verified: true, license_status: "verified" }
             : doc
         )
       );
@@ -49,25 +68,29 @@ const DoctorManagement = () => {
   const handleReject = async (doctorId) => {
     try {
       const res = await axios.patch(`${API_URL}/api/doctor/reject`, {
-        doctorId: doctorId,
+        doctorId,
       });
 
-      console.log("Rejected Response:", res.data);
-
-      setDoctors((prevDoctors) =>
-        prevDoctors.map((doc) =>
+      setDoctors((prev) =>
+        prev.map((doc) =>
           doc._id === doctorId
-            ? {
-                ...doc,
-                is_verified: false,
-                license_status: "rejected",
-              }
+            ? { ...doc, is_verified: false, license_status: "rejected" }
             : doc
         )
       );
     } catch (error) {
       console.error("Error rejecting doctor:", error);
     }
+  };
+
+  const openLicenseModal = (doctor) => {
+    setSelectedDoctor(doctor);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedDoctor(null);
+    setIsModalOpen(false);
   };
 
   return (
@@ -138,7 +161,7 @@ const DoctorManagement = () => {
                 <td className="px-6 py-4">
                   <button
                     className="border border-gray-300 text-gray-700 px-4 py-1 rounded hover:bg-gray-100"
-                    onClick={() => console.log("View license of", doctor._id)} // You can replace this with modal or link
+                    onClick={() => openLicenseModal(doctor)}
                   >
                     View License
                   </button>
@@ -148,6 +171,33 @@ const DoctorManagement = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && selectedDoctor && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div className="bg-white rounded-lg p-6 w-11/12 max-w-xl relative h-[95vh]">
+            <h2 className="text-lg font-semibold mb-4">
+              License of {selectedDoctor.fullName}
+            </h2>
+            {selectedDoctor.licenseUrl ? (
+              <img
+                src={selectedDoctor.licenseUrl}
+                alt="Doctor License"
+                className="w-full h-[80vh] rounded border"
+              />
+            ) : (
+              <p className="text-red-500">No license uploaded.</p>
+            )}
+
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-500 hover:text-black text-lg"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
