@@ -1,13 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import * as validate from "../../utils/validations/Validations";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { app } from "../../firebase";
 import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
@@ -15,13 +8,12 @@ const Signup = () => {
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
-  const [license, setLicense] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [licenseName, setLicenseName] = useState(""); // for showing file name
+  const [base64Image, setBase64Image] = useState("");
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    license: "",
     password: "",
     confirmPassword: "",
   });
@@ -53,45 +45,33 @@ const Signup = () => {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  const handelImage = () => {
+  const handleImage = () => {
     inputRef.current.click();
   };
 
-  useEffect(() => {
-    if (license) {
-      uploadFile(license);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setLicenseName(file.name);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64Image(reader.result); // base64 string with mime prefix
+      };
+      reader.readAsDataURL(file);
     }
-  }, [license]);
 
-  const uploadFile = (file) => {
-    const storage = getStorage(app);
-    const storageRef = ref(storage, "LicenseImages/" + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-      },
-      (error) => {
-        console.error("Upload error code:", error.code);
-        console.error("Upload error message:", error.message);
-        console.error("Full error:", error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageUrl(downloadURL);
-          console.log("File available at", downloadURL);
-        });
-      }
-    );
+    if (file.size > 5 * 1024 * 1024) {
+      // 5 MB limit
+      alert("File size exceeds 5MB limit.");
+      return;
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Final password confirm validation before submit
     if (formData.password !== formData.confirmPassword) {
       setErrors((prev) => ({
         ...prev,
@@ -100,21 +80,34 @@ const Signup = () => {
       return;
     }
 
+    // Check for existing validation errors
     const hasError = Object.values(errors).some((err) => err);
-    if (!hasError) {
-      axios
-        .post(`${API_URL}/api/doctor/doctor_signUp`, {
-          ...formData,
-          license: imageUrl, // Attach uploaded image URL
-        })
-        .then((response) => {
-          console.log("API response:", response.data);
-          navigate("/login");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+    if (hasError) return;
+
+    // Check required license base64 image exists
+    if (!base64Image) {
+      setErrors((prev) => ({
+        ...prev,
+        license: "Please upload your medical license",
+      }));
+      return;
+    } else {
+      setErrors((prev) => ({ ...prev, license: "" }));
     }
+
+    // Send form data + license base64 string to backend
+    axios
+      .post(`${API_URL}/api/doctor/doctor_signUp`, {
+        ...formData,
+        license: base64Image,
+      })
+      .then((response) => {
+        console.log("API response:", response.data);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -176,10 +169,10 @@ const Signup = () => {
 
             {/* Styled button to trigger file input */}
             <div
-              onClick={handelImage}
+              onClick={handleImage}
               className="w-full px-4 py-2 bg-[#722626] text-white rounded border border-transparent text-center cursor-pointer hover:bg-[#8d3b3b]"
             >
-              {license ? license.name : "Upload Medical License"}
+              {licenseName || "Upload Medical License"}
             </div>
 
             {/* Hidden file input */}
@@ -189,13 +182,12 @@ const Signup = () => {
               accept="image/png, image/jpeg"
               required
               ref={inputRef}
-              onChange={(e) => {
-                if (e.target.files[0]) {
-                  setLicense(e.target.files[0]);
-                }
-              }}
+              onChange={handleFileChange}
               className="hidden"
             />
+            {errors.license && (
+              <p className="text-red-500 text-sm mt-1">{errors.license}</p>
+            )}
           </div>
 
           <div>

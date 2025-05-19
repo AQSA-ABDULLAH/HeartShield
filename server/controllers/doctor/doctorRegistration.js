@@ -12,10 +12,9 @@ class DoctorController {
         email,
         password,
         confirmPassword,
-        license
+        license, // This is base64 string
       } = req.body;
 
-      // Check for required fields
       if (!fullName || !email || !password || !confirmPassword || !license) {
         return res
           .status(422)
@@ -28,22 +27,34 @@ class DoctorController {
         return res.status(422).json({ error: "Doctor already exists" });
       }
 
-      // Password confirmation check
       if (password !== confirmPassword) {
         return res.status(422).json({
           error: "Password and Confirm Password don't match",
         });
       }
 
+      // Parse base64 license image
+      const matches = license.match(/^data:(.+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res.status(422).json({ error: "Invalid license image format" });
+      }
+
+      const contentType = matches[1];
+      const base64Data = matches[2];
+      const licenseBuffer = Buffer.from(base64Data, "base64");
+
       // Hash password
       const hashedPassword = await hashPassword(password);
 
-      // Create new doctor
+      // Create new doctor with license as Buffer + contentType
       const newDoctor = new Doctor({
         fullName,
         email,
-        license,
         password: hashedPassword,
+        license: {
+          data: licenseBuffer,
+          contentType: contentType,
+        },
         is_verified: false,
         is_approved: false,
       });
@@ -59,7 +70,6 @@ class DoctorController {
 
       console.log("Doctor registered successfully, sending verification email...");
 
-      // Compile and send email
       const template = await compileEmailTemplate({
         fileName: "register.mjml",
         data: { fullName },
@@ -78,7 +88,6 @@ class DoctorController {
           error: "Doctor registered, but failed to send verification email",
         });
       }
-
     } catch (error) {
       console.error("Error in doctor registration:", error);
       return res.status(500).json({ error: "Registration failed" });

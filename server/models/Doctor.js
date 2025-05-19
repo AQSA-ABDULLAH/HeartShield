@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken')
 const doctorsSchema = new mongoose.Schema({
     fullName: { type: String, required: true, trim: true },
     email: { type: String, trim: true, required: true, unique: true },
-    license:{ type: String, trim: true },
+    license: {
+    data: Buffer,
+    contentType: String,
+  },
     license_status: { type: String, trim: true, default: "pending" },
     password: { type: String, required: true, trim: true },
     is_approved: { type: Boolean, default: false },
