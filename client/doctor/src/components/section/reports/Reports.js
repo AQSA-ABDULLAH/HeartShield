@@ -10,8 +10,8 @@ const reports = [
   {
     name: "Michael Chen",
     date: "2024-01-14",
-    risk: "Medium Risk",
-    riskColor: "bg-yellow-100 text-yellow-600 border-yellow-300"
+   risk: "High Risk",
+    riskColor: "bg-red-100 text-red-600 border-red-300"
   },
   {
     name: "Emma Davis",
@@ -28,8 +28,8 @@ const reports = [
   {
     name: "Maria Garcia",
     date: "2024-01-11",
-    risk: "Medium Risk",
-    riskColor: "bg-yellow-100 text-yellow-600 border-yellow-300"
+   risk: "High Risk",
+    riskColor: "bg-red-100 text-red-600 border-red-300"
   }
 ];
 

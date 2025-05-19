@@ -24,7 +24,7 @@ const GlobalRoute = () => {
         }
       } else {
         if (publicRoutes.includes(location.pathname)) {
-          navigate("/dashboard");
+          navigate("/");
         }
       }
     }, [isSignedIn, navigate, location.pathname]);

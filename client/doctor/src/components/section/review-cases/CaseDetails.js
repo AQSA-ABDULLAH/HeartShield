@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function CaseDetails() {
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen ml-[280px]">
       <button className="flex items-center text-sm text-black mb-4">
         <ArrowLeft className="mr-1 w-4 h-4" /> Back to Cases
       </button>
@@ -49,7 +49,6 @@ export default function CaseDetails() {
           <h3 className="text-base font-semibold mb-3">AI Risk Assessment</h3>
           <div className="flex space-x-2 mb-4">
             <button className="bg-red-500 text-white px-4 py-1 rounded-full text-sm">High Risk</button>
-            <button className="border border-yellow-500 text-yellow-700 px-4 py-1 rounded-full text-sm">Medium Risk</button>
             <button className="border border-green-500 text-green-700 px-4 py-1 rounded-full text-sm">Low Risk</button>
           </div>
           <label className="block text-sm font-medium mb-1">

@@ -11,8 +11,8 @@ const cases = [
   {
     name: "Michael Smith",
     date: "2024-01-14",
-    risk: "Medium Risk",
-    riskColor: "bg-yellow-100 text-yellow-600 border-yellow-300"
+    risk: "Low Risk",
+    riskColor: "bg-green-100 text-green-600 border-green-300"
   },
   {
     name: "Emma Davis",
