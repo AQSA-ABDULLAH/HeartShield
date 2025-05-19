@@ -115,7 +115,7 @@ const DoctorManagement = () => {
                   )}
                 </td>
                 <td className="px-6 py-4 space-x-2">
-                  {!doctor.is_verified ? (
+                  {doctor.license_status === "pending" ? (
                     <>
                       <button
                         className="bg-[#3b0a00] text-white px-4 py-1 rounded hover:bg-red-900"
