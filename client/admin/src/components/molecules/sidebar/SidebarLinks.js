@@ -9,18 +9,21 @@ const SidebarLinks = ({ data, handleLinkClick }) => {
   return (
     <div className={styles.linksContainer}>
       {data.map((item, index) => (
-        <NavLink
-          to={item.route}
-          className={styles.sideLink}
-          key={index}
-          onClick={() => {
-            console.log(`Clicked on ${item.route}`);
-            handleLinkClick();
-          }}
-        >
-          <div className={styles.icon}>{item.icon}</div>
-          <p className={styles.linkText}>{item.text}</p>
-        </NavLink>
+       <NavLink
+  to={item.route}
+  key={index}
+  className={({ isActive }) =>
+    `${styles.sideLink} ${isActive ? styles.active : ""}`
+  }
+  onClick={() => {
+    console.log(`Clicked on ${item.route}`);
+    handleLinkClick();
+  }}
+>
+  <div className={styles.icon}>{item.icon}</div>
+  <p className={styles.linkText}>{item.text}</p>
+</NavLink>
+
       ))}
     </div>
   );

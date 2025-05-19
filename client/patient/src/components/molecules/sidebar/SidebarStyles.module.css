@@ -32,11 +32,11 @@
 }
 
 .active {
-    background-color: #FFFFFF1A;
-    color: #fff;
-    font-weight: 700;
-    border-radius: 10px;
-    padding-left: 1rem;
+  background-color: #FFFFFF1A;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 10px;
+  padding-left: 1rem;
 }
 
 .sideLink:hover {

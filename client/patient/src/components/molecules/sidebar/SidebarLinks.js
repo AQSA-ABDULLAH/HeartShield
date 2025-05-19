@@ -11,8 +11,10 @@ const SidebarLinks = ({ data, handleLinkClick }) => {
       {data.map((item, index) => (
         <NavLink
           to={item.route}
-          className={styles.sideLink}
           key={index}
+          className={({ isActive }) =>
+            `${styles.sideLink} ${isActive ? styles.active : ""}`
+          }
           onClick={() => {
             console.log(`Clicked on ${item.route}`);
             handleLinkClick();
