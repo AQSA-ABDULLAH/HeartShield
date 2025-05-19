@@ -7,7 +7,7 @@ const forgetPasswordSchema = new mongoose.Schema({
         unique: true,
     },
     otp: {
-        type: String,
+        type: Number,
         required: true,
     },
     createdAt: {

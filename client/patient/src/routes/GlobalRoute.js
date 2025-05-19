@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Signup from "../login-model/signup/Signup";
 import ForgetPasswordOtp from "../login-model/forget-password/OtpCode";
+import About from "../pages/AboutUs";
 import { useLocation } from "react-router-dom";
 import Home from "../pages/Home";
 
@@ -17,7 +18,7 @@ const GlobalRoute = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const publicRoutes = ["/", "/login", "/signup", "/forget-password-otp"];
+    const publicRoutes = ["/", "/login", "/signup", "/forget-password-otp", "/about-us"];
 
     if (!isSignedIn) {
       if (!publicRoutes.includes(location.pathname)) {
@@ -45,6 +46,7 @@ const GlobalRoute = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forget-password-otp" element={<ForgetPasswordOtp />} />
+          <Route path="/about-us" element={<About />} />
           <Route path="/" element={<Home />} />
         </Routes>
       )}

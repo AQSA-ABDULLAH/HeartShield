@@ -3,6 +3,7 @@ import Login from "../pages/Login/Login";
 import ErrorPage from "../pages/404/ErrorPage";
 import Signup from "../login-model/signup/Signup";
 import Home from "../pages/Home";
+import About from "../pages/AboutUs";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ECGUploader from "../pages/Upload-ECG/Upload-ECG";
 import Reports from "../pages/Reports/Reports";
@@ -19,6 +20,7 @@ const RoutesStack = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forget-password-otp" element={<ForgetPasswordOtp/>}/>
           <Route path="/" element={<Home />} />
+          <Route path="/about-us" element={<About />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload-ecg" element={<ECGUploader />} />
           <Route path="/reports" element={<Reports />} />
