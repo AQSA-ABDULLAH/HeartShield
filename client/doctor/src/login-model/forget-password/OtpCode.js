@@ -201,7 +201,7 @@ const ForgetPasswordOtp = () => {
               </div>
               <button
                 onClick={handleUpdatePassword}
-                className="w-full bg-purple-700 hover:bg-purple-800 text-white py-3 rounded font-semibold transition"
+                className="w-full bg-[#8b0000] hover:bg-[#a00000] text-white py-3 rounded font-semibold transition"
               >
                 Update Password
               </button>
