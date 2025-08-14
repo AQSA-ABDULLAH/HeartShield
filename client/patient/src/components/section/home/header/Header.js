@@ -12,9 +12,6 @@ function Header() {
               <Link to="/about-us" className="hover:text-white">
                 About Us
               </Link>
-              <Link to="#" className="hover:text-white">
-                Contact
-              </Link>
             </nav>
           </header>
   )
