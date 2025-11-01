@@ -20,9 +20,9 @@ router.patch("/update-password", ForgetPasswordController.updatePassword);
 // PROTECTED ROUTES
 router.put("/update-profile", authMiddleware, UserController.updateProfile);
 router.put("/change-password", authMiddleware, UserController.changePassword);
-router.get("/get-patients", authMiddleware, ProfileController.getAllPatients);
-router.get("/get-patient/:id", authMiddleware, ProfileController.getPatient);
-router.delete("/delete-patient/:id", authMiddleware, ProfileController.deletePatient);
+router.get("/get-patients", ProfileController.getAllPatients);
+router.get("/get-patient/:id", ProfileController.getPatient);
+router.delete("/delete-patient/:id", ProfileController.deletePatient);
 
 // Email Verification Route (optional)
 // router.post("/mail_verification/:id", UserController.mailVerification);
